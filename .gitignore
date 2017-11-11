@@ -2,3 +2,5 @@
 .idea
 /tmp
 .DS_Store
+/data
+__pycache__/
