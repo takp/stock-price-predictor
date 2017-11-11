@@ -10,3 +10,5 @@ nasdaq_data = data_preprocessor.preprocess_nasdaq(nasdaq_data_org)
 currency_data = data_preprocessor.preprocess_currency(currency_data_org)
 
 print(nikkei_data)
+print(nasdaq_data)
+print(currency_data)
