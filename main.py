@@ -1,6 +1,7 @@
 import data_loader
 import data_preprocessor
 import data_splitter
+import lstm_model
 
 # Load data
 nikkei_data_org, nasdaq_data_org, currency_data_org = data_loader.load_dataset()
@@ -10,9 +11,9 @@ nikkei_data = data_preprocessor.preprocess_nikkei(nikkei_data_org)
 nasdaq_data = data_preprocessor.preprocess_nasdaq(nasdaq_data_org)
 currency_data = data_preprocessor.preprocess_currency(currency_data_org)
 
-print(nikkei_data)
-print(nasdaq_data)
-print(currency_data)
+print(nikkei_data.head())
+print(nasdaq_data.head())
+print(currency_data.head())
 
 # Split the data
 nikkei_train_data, nikkei_test_data = data_splitter.split(nikkei_data)
@@ -32,3 +33,7 @@ print("Currency train dataset has {} samples.".format(*currency_train_data.shape
 print("Currency test dataset has {} samples.".format(*currency_test_data.shape))
 # print(currency_train_data.head())
 # print(currency_test_data.head())
+
+# Build model
+model = lstm_model.LSTMModel().build()
+
