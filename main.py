@@ -1,6 +1,6 @@
 import data_loader
 from data_preprocessor import DataPreprocessor
-import data_splitter
+from data_splitter import DataSplitter
 import lstm_model
 
 # Load data
@@ -17,28 +17,17 @@ currency_data = DataPreprocessor(currency_data_org).preprocess_data(dropping_fea
 
 # Merge data
 merged_data = DataPreprocessor.merge(nikkei_data, nasdaq_data, currency_data)
-print(merged_data.head(20))
+# Remove non-working days
+data = merged_data.dropna()
 
-#
-#
-# # Split the data
-# nikkei_train_data, nikkei_test_data = data_splitter.split(nikkei_data)
-# print("Nikkei train dataset has {} samples.".format(*nikkei_train_data.shape))
-# print("Nikkei test dataset has {} samples.".format(*nikkei_test_data.shape))
-# # print(nikkei_train_data.head())
-# # print(nikkei_test_data.head())
-#
-# nasdaq_train_data, nasdaq_test_data = data_splitter.split(nasdaq_data)
-# print("Nasdaq train dataset has {} samples.".format(*nasdaq_train_data.shape))
-# print("Nasdaq test dataset has {} samples.".format(*nasdaq_test_data.shape))
-# # print(nasdaq_train_data.head())
-# # print(nasdaq_test_data.head())
-#
-# currency_train_data, currency_test_data = data_splitter.split(currency_data)
-# print("Currency train dataset has {} samples.".format(*currency_train_data.shape))
-# print("Currency test dataset has {} samples.".format(*currency_test_data.shape))
-# # print(currency_train_data.head())
-# # print(currency_test_data.head())
+# Split the data
+x_train, x_test = DataSplitter.split(data)
+
+print("Train dataset has {} samples.".format(*x_train.shape))
+print(x_train.head(10))
+
+print("Test dataset has {} samples.".format(*x_test.shape))
+print(x_test.head(10))
 
 # Build & train model
 model = lstm_model.LSTMModel().build()
