@@ -1,7 +1,7 @@
 import data_loader
 from data_preprocessor import DataPreprocessor
 from data_splitter import DataSplitter
-import lstm_model
+from lstm_model import LSTMModel
 
 # Load data
 nikkei_data_org, nasdaq_data_org, currency_data_org = data_loader.load_dataset()
@@ -30,5 +30,5 @@ print("Test dataset has {} samples.".format(*x_test.shape))
 print(x_test.head(10))
 
 # Build & train model
-model = lstm_model.LSTMModel().build()
+model = LSTMModel().build()
 # model.fit(X_train, y_train, batch_size=10, nb_epoch=0.05)

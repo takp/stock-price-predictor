@@ -23,8 +23,8 @@ class DataPreprocessor:
         return data
 
     @classmethod
-    def merge(self, nikkei_data, nasdaq_data, currency_data):
-        df = self.__create_blank_dataframe()
+    def merge(cls, nikkei_data, nasdaq_data, currency_data):
+        df = cls.__create_blank_dataframe()
         df['nikkei'] = pd.Series()
         df['nasdaq'] = pd.Series()
         df['currency'] = pd.Series()
@@ -43,17 +43,17 @@ class DataPreprocessor:
         return df
 
     @classmethod
-    def __create_blank_dataframe(self):
+    def __create_blank_dataframe(cls):
         today = pd.to_datetime('today')
         start = pd.to_datetime('2013-01-22')
         dates = []
-        for i in self.__daterange(start, today):
+        for i in cls.__daterange(start, today):
             # print(i.strftime("%Y-%m-%d"))
             dates.append(pd.to_datetime(i))
         df = pd.DataFrame(dates, columns=['date'])
         return df
 
     @classmethod
-    def __daterange(self, start, end):
+    def __daterange(cls, start, end):
         for i in range(int((end - start).days)):
             yield start + timedelta(i)
