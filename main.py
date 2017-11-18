@@ -2,6 +2,7 @@ import data_loader
 from data_preprocessor import DataPreprocessor
 from data_splitter import DataSplitter
 from lstm_model import LSTMModel
+import pandas as pd
 
 # Load data
 nikkei_data_org, nasdaq_data_org, currency_data_org = data_loader.load_dataset()
@@ -15,23 +16,33 @@ nikkei_data = DataPreprocessor(nikkei_data_org).preprocess_data(dropping_feature
 nasdaq_data = DataPreprocessor(nasdaq_data_org).preprocess_data(dropping_features_for_nasdaq)
 currency_data = DataPreprocessor(currency_data_org).preprocess_data(dropping_features_for_currency)
 
-# Merge data
 merged_data = DataPreprocessor.merge(nikkei_data, nasdaq_data, currency_data)
-# Remove non-working days
 data = merged_data.dropna()
-# Split data to train and test by the date
-data_train, data_test = DataSplitter.split_to_train_and_test(data)
 
+# Split the data
+data_train, data_test = DataSplitter.split_to_train_and_test(data)
 x_train, y_train = DataSplitter.split_to_x_and_y(data_train, length_of_sequence=10)
 x_test, y_test = DataSplitter.split_to_x_and_y(data_test, length_of_sequence=10)
 
 print("Train dataset has {} samples.".format(*x_train.shape))
-# print(x_train[0:5])
-# print(y_train[0:5])
+print(x_train[:3])
+print(y_train[:3])
 print("Test dataset has {} samples.".format(*x_test.shape))
-# print(x_test[0:5])
-# print(y_test[0:5])
+# print(x_test[:3])
+# print(y_test[:3])
 
 # Build & train model
 model = LSTMModel().build()
-# model.fit(X_train, y_train, batch_size=10, nb_epoch=0.05)
+print("Fitting the model...")
+model.fit(x_train, y_train, batch_size=10, epochs=10)
+
+print("Predicting...")
+result = model.predict(x_test)
+predicted = pd.DataFrame(result)
+predicted.columns = ['predicted_nikkei']
+predicted['actual_nikkei'] = y_test
+
+print("Predicted ====>")
+print(predicted.shape)
+print(predicted[:20])
+

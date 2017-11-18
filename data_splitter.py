@@ -8,7 +8,7 @@ class DataSplitter:
         x, y = [], []
         for i in range(len(data) - length_of_sequence):
             x.append(data.iloc[i:(i + length_of_sequence)].drop('date', axis=1).as_matrix())
-            y.append(data.iloc[i + length_of_sequence]['nikkei'])
+            y.append([data.iloc[i + length_of_sequence]['nikkei']])
         return numpy.array(x), numpy.array(y)
 
     @classmethod
