@@ -19,15 +19,18 @@ currency_data = DataPreprocessor(currency_data_org).preprocess_data(dropping_fea
 merged_data = DataPreprocessor.merge(nikkei_data, nasdaq_data, currency_data)
 # Remove non-working days
 data = merged_data.dropna()
+# Split data to train and test by the date
+data_train, data_test = DataSplitter.split_to_train_and_test(data)
 
-# Split the data
-x_train, x_test = DataSplitter.split(data)
+x_train, y_train = DataSplitter.split_to_x_and_y(data_train, length_of_sequence=10)
+x_test, y_test = DataSplitter.split_to_x_and_y(data_test, length_of_sequence=10)
 
 print("Train dataset has {} samples.".format(*x_train.shape))
-print(x_train.head(10))
-
+# print(x_train[0:5])
+# print(y_train[0:5])
 print("Test dataset has {} samples.".format(*x_test.shape))
-print(x_test.head(10))
+# print(x_test[0:5])
+# print(y_test[0:5])
 
 # Build & train model
 model = LSTMModel().build()

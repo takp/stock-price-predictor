@@ -1,9 +1,18 @@
 import pandas as pd
+import numpy
 
 
 class DataSplitter:
     @classmethod
-    def split(self, data):
+    def split_to_x_and_y(self, data, length_of_sequence):
+        x, y = [], []
+        for i in range(len(data) - length_of_sequence):
+            x.append(data.iloc[i:(i + length_of_sequence)].drop('date', axis=1).as_matrix())
+            y.append(data.iloc[i + length_of_sequence]['nikkei'])
+        return numpy.array(x), numpy.array(y)
+
+    @classmethod
+    def split_to_train_and_test(self, data):
         train_start = pd.to_datetime('2013-01-22')
         test_start = pd.to_datetime('2017-01-01')
         train_data_mask = (train_start <= data['date']) & (data['date'] < test_start)
