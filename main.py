@@ -1,5 +1,5 @@
 import data_loader
-import data_preprocessor
+from data_preprocessor import DataPreprocessor
 import data_splitter
 import lstm_model
 
@@ -7,12 +7,16 @@ import lstm_model
 nikkei_data_org, nasdaq_data_org, currency_data_org = data_loader.load_dataset()
 
 # Data Preprocessing
-nikkei_data = data_preprocessor.preprocess_nikkei(nikkei_data_org)
-nasdaq_data = data_preprocessor.preprocess_nasdaq(nasdaq_data_org)
-currency_data = data_preprocessor.preprocess_currency(currency_data_org)
+dropping_features_for_nikkei = ['Open Price', 'High Price', 'Low Price']
+dropping_features_for_nasdaq = ['High', 'Low', 'Total Market Value', 'Dividend Market Value']
+dropping_features_for_currency = ['High (est)', 'Low (est)']
+
+nikkei_data = DataPreprocessor(nikkei_data_org).preprocess_data(dropping_features_for_nikkei)
+nasdaq_data = DataPreprocessor(nasdaq_data_org).preprocess_data(dropping_features_for_nasdaq)
+currency_data = DataPreprocessor(currency_data_org).preprocess_data(dropping_features_for_currency)
 
 # Merge data
-merged_data = data_preprocessor.merge(nikkei_data, nasdaq_data, currency_data)
+merged_data = DataPreprocessor.merge(nikkei_data, nasdaq_data, currency_data)
 print(merged_data.head(20))
 
 #
