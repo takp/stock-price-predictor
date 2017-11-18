@@ -4,11 +4,11 @@ import numpy
 
 class DataSplitter:
     @classmethod
-    def split_to_x_and_y(self, data, length_of_sequence):
+    def split_to_x_and_y(self, data, timesteps):
         x, y = [], []
-        for i in range(len(data) - length_of_sequence):
-            x.append(data.iloc[i:(i + length_of_sequence)].drop('date', axis=1).as_matrix())
-            y.append([data.iloc[i + length_of_sequence]['nikkei']])
+        for i in range(len(data) - timesteps):
+            x.append(data.iloc[i:(i + timesteps)].drop('date', axis=1).as_matrix())
+            y.append([data.iloc[i + timesteps]['nikkei']])
         return numpy.array(x), numpy.array(y)
 
     @classmethod
