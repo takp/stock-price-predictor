@@ -16,11 +16,10 @@ class LSTMModel:
         model.add(LSTM(self.hidden_neurons,
                        batch_input_shape=(None, self.timesteps, self.input_dim),
                        return_sequences=True))
-        model.add(Dropout(0.2))
+        # model.add(Dropout(0.2))
         print(model.output_shape) # => (None, 10, 10)
 
         # model.add(LSTM(100, return_sequences=False))
-        # model.add(Dropout(0.2))
         model.add(Flatten())
         print(model.output_shape) # => (None, 100)
 

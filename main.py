@@ -8,7 +8,7 @@ import pandas as pd
 timesteps = 10
 hidden_neurons = 50
 epochs = 100
-batchsize = 50
+batchsize = 10
 
 # Load data
 nikkei_data_org, nasdaq_data_org, currency_data_org = data_loader.load_dataset()
@@ -48,7 +48,7 @@ predicted = pd.DataFrame(result)
 predicted.columns = ['predicted_nikkei']
 predicted['actual_nikkei'] = y_test
 
-print("Predicted ====>")
+print("Completed Prediction.")
 print(predicted.shape)
 print(predicted[:50])
 

@@ -17,7 +17,7 @@ class DataPreprocessor:
         data['change_rate'] = pd.Series()
         for i in range(len(self.data) - 1):
             close_prices = data['ClosePrice']
-            change_rate = (float(close_prices[i]) / close_prices[i + 1]) * 100
+            change_rate = (float(close_prices[i]) / close_prices[i + 1])
             rounded_change_rate = round(change_rate, 50)
             data.set_value(i, 'change_rate', rounded_change_rate)
         return data
