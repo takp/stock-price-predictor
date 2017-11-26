@@ -52,4 +52,5 @@ print("Predicted ====>")
 print(predicted.shape)
 print(predicted[:50])
 
-# Calculate error (mape or mse)
+# Output to csv
+predicted.to_csv("predicted.csv")
