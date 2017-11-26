@@ -2,7 +2,9 @@ import data_loader
 from data_preprocessor import DataPreprocessor
 from data_splitter import DataSplitter
 from lstm_model import LSTMModel
+from dummy_predictor import DummyPredictor
 import pandas as pd
+import numpy as np
 
 # Configurations
 timesteps = 10
@@ -55,9 +57,19 @@ predicted['actual_nikkei'] = y_test
 
 print("Completed Prediction.")
 print(predicted.shape)
-print(predicted[:50])
-
+print(predicted[:10])
 # Output to csv
 predicted.to_csv("predicted.csv")
 
-# TODO: Compare with benchmark model
+# Evaluate
+evaluation_score = model.evaluate(x_test, y_test, batch_size=batchsize, verbose=1)
+print("Evaluation score is {}".format(evaluation_score))
+
+# Evaluate benchmark
+dummy_predicted = DummyPredictor().get_evaluation_score(y_train)
+dummy_evaluation_score = np.mean((y_test - dummy_predicted) ** 2)
+print("Dummy evaluation score is {}".format(dummy_evaluation_score))
+
+# Compare
+comparison = (evaluation_score / dummy_evaluation_score) * 100
+print("This prediction model's MSE is {} percent compared to benchmark. (smaller is better)".format(comparison))
