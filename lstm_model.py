@@ -4,7 +4,7 @@ from keras.layers.recurrent import LSTM
 
 
 class LSTMModel:
-    def __init__(self, timesteps=10, hidden_neurons=50):
+    def __init__(self, timesteps, hidden_neurons):
         self.timesteps = timesteps
         self.hidden_neurons = hidden_neurons
         self.input_dim = 3
@@ -19,8 +19,9 @@ class LSTMModel:
         model.add(Dropout(0.2))
         print(model.output_shape) # => (None, 10, 10)
 
-        model.add(LSTM(100, return_sequences=False))
-        model.add(Dropout(0.2))
+        # model.add(LSTM(100, return_sequences=False))
+        # model.add(Dropout(0.2))
+        model.add(Flatten())
         print(model.output_shape) # => (None, 100)
 
         model.add(Dense(1))
@@ -29,7 +30,9 @@ class LSTMModel:
         model.add(Activation("linear"))
         print(model.output_shape) # => (None, 1)
 
-        model.compile(loss="mape", optimizer="rmsprop")
-        # model.compile(loss='mse', optimizer='rmsprop')
+        # model.compile(loss="mape", optimizer="rmsprop")
+        model.compile(loss='mse', optimizer='rmsprop')
+
+        model.summary()
 
         return model

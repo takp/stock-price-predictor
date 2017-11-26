@@ -4,9 +4,11 @@ from data_splitter import DataSplitter
 from lstm_model import LSTMModel
 import pandas as pd
 
-# Settings
+# Configurations
 timesteps = 10
 hidden_neurons = 50
+epochs = 100
+batchsize = 50
 
 # Load data
 nikkei_data_org, nasdaq_data_org, currency_data_org = data_loader.load_dataset()
@@ -38,7 +40,7 @@ print("Test dataset has {} samples.".format(*x_test.shape))
 # Build & train model
 model = LSTMModel(timesteps, hidden_neurons).build()
 print("Fitting the model...")
-model.fit(x_train, y_train, batch_size=100, epochs=100)
+model.fit(x_train, y_train, batch_size=batchsize, epochs=epochs)
 
 print("Predicting...")
 result = model.predict(x_test)
@@ -48,4 +50,6 @@ predicted['actual_nikkei'] = y_test
 
 print("Predicted ====>")
 print(predicted.shape)
-print(predicted[:20])
+print(predicted[:50])
+
+# Calculate error (mape or mse)
