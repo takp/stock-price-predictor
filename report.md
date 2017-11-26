@@ -249,3 +249,39 @@ I fit the model with this configurations:
 - hidden_neurons = 50 (number of hidden units)
 - epochs = 100
 - batchsize = 10
+
+### Refinement
+
+I started to fit the model with epochs: 10 but it's not enough to fit.
+I could see the MSE score still keep going down so I changed it to 100.
+
+## IV. Results
+
+### Model Evaluation and Validation
+
+I chose to use LSTM (Long short-term memory) for this problem because this is time-series problem and
+LSTM has the advantages for this kind of problem since LSTM can remember the past values better.
+
+I decided to start with the simpler model so I think I need more investigation about the model structure.
+This model has only 1 LSTM layer (with 50 hidden units) and dense it to output feature.
+
+Based on the purpose of this project is to investigate my hypothesis that there should be correlation between some countries stock price and currency data,
+I believe the simpler model is enough.  
+
+### Justification
+
+Compared to the benchmark (made by dummy classifier), this prediction model lessen the MSE (Mean Squared Error) about 80%.
+I think this is significant result as it is quite difficult to predict the next day's change rate.
+
+## V. Conclusion
+
+### Free-Form Visualization
+
+- ![Image]()
+(Orange is actual / Blue is predicted)
+
+This is the comparison between predicted change rate and actual change rate.
+
+I could find that the actual change rate is larger (high volatility) and the predicted one is smaller (low volatility).
+But the remarkable result is that some of the day it has big drop and the prediction also drop at the same day.
+Of course it does not work well for some days, but as I see the graph I think it works better than expected. 
