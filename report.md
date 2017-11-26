@@ -141,7 +141,7 @@ nasdaq_data = DataPreprocessor(nasdaq_data_org).preprocess_data(dropping_feature
 currency_data = DataPreprocessor(currency_data_org).preprocess_data(dropping_features_for_currency)
 ```
 
-Here `DataPreprocessor` class preprocess the data.
+Here `DataPreprocessor` class preprocess the data. (`data_preprocessor.py`)
 `preprocess_data` method does:
 - Drop the unnecessary features
 - Rename columns (to 'date' and 'ClosePrice')
@@ -175,3 +175,77 @@ Preprocessed data is like this:
 
 ### Splitting the data
 
+`DataSplitter` class splits the data to train, validation and test. (`data_splitter.py`)
+
+```python
+# main.py
+
+# Split the data
+data_train, data_val, data_test = DataSplitter.split_to_train_val_test(data)
+x_train, y_train = DataSplitter.split_to_x_and_y(data_train, timesteps=timesteps)
+x_val, y_val = DataSplitter.split_to_x_and_y(data_val, timesteps=timesteps)
+x_test, y_test = DataSplitter.split_to_x_and_y(data_test, timesteps=timesteps)
+```
+
+Since this is time-series data, the data are not independent each other.
+So it should be avoided to extract validation data or test data randomly.
+Instead, I'm going to split the data by time. 
+
+I decided to split the data as following:
+- Train: "2013-01-22" to "2016-06-30"
+- Validation: "2016-07-01" to "2016-12-31"
+- Test: "2017-01-01" to newest date
+
+Now the data samples are:
+- 807 samples for train
+- 109 samples for validation
+- 203 samples for test
+
+### Implementation
+
+#### Building the model
+
+I am going to build the model with LSTM (Long short-term memory).
+
+```python
+# main.py
+model = LSTMModel(timesteps, hidden_neurons).build()
+```
+
+At first, I build the simple model.
+
+1st layer is LSTM with hidden units: 50.
+and flatten it and finally dense it with lenear activation.  
+
+```python
+# Output of model.summary()
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+lstm_1 (LSTM)                (None, 10, 50)            10800     
+_________________________________________________________________
+flatten_1 (Flatten)          (None, 500)               0         
+_________________________________________________________________
+dense_1 (Dense)              (None, 1)                 501       
+_________________________________________________________________
+activation_1 (Activation)    (None, 1)                 0         
+=================================================================
+Total params: 11,301
+Trainable params: 11,301
+Non-trainable params: 0
+```
+
+#### Fitting the model
+
+```python
+# main.py
+model.fit(x_train, y_train,
+          batch_size=batchsize, epochs=epochs, validation_data=(x_val, y_val))
+```
+
+I fit the model with this configurations: 
+
+- timesteps = 10 (days: sequence of the sliding window)
+- hidden_neurons = 50 (number of hidden units)
+- epochs = 100
+- batchsize = 10
