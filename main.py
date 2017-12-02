@@ -9,7 +9,7 @@ import numpy as np
 # Configurations
 timesteps = 10
 hidden_neurons = 50
-epochs = 100
+epochs = 300
 batchsize = 10
 
 # Load data

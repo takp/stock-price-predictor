@@ -31,6 +31,7 @@ Then, it is possible to know the error between the predicted rate and the actual
 ### Metrics
 
 I use MSE (Mean Squared Error) to evaluate the prediction.
+To leesen the error between the actual and the prediction, I think the MSE is suitable for this problem. 
 
 ## II. Analysis
 
@@ -192,13 +193,13 @@ So it should be avoided to extract validation data or test data randomly.
 Instead, I'm going to split the data by time. 
 
 I decided to split the data as following:
-- Train: "2013-01-22" to "2016-06-30"
-- Validation: "2016-07-01" to "2016-12-31"
+- Train: "2003-01-22" to "2016-01-01"
+- Validation: "2016-01-01" to "2016-12-31"
 - Test: "2017-01-01" to newest date
 
 Now the data samples are:
-- 807 samples for train
-- 109 samples for validation
+- 3060 samples for train
+- 227 samples for validation
 - 203 samples for test
 
 ### Implementation
@@ -247,7 +248,7 @@ I fit the model with this configurations:
 
 - timesteps = 10 (days: sequence of the sliding window)
 - hidden_neurons = 50 (number of hidden units)
-- epochs = 100
+- epochs = 100 (500 later)
 - batchsize = 10
 
 ### Refinement
@@ -259,31 +260,76 @@ I could see the MSE score still keep going down so I changed it to 100.
 
 ### Model Evaluation and Validation
 
-I chose to use LSTM (Long short-term memory) for this problem because this is time-series problem and
-LSTM has the advantages for this kind of problem since LSTM can remember the past values better.
+#### Training with epochs: 100
 
-I decided to start with the simpler model so I think I need more investigation about the model structure.
-This model has only 1 LSTM layer (with 50 hidden units) and dense it to output feature.
+```python
+Completed Prediction.
+(203, 2)
+   predicted_nikkei  actual_nikkei
+0          1.002065       1.003443
+1          1.003285       0.987100
+2          1.003638       0.994546
+3          1.013035       1.014345
+4          1.005125       1.018097
+5          1.005163       1.003351
+6          1.005462       0.994938
+7          0.997152       0.983091
+8          1.004840       1.005606
+9          1.006951       0.987806
 
-Based on the purpose of this project is to investigate my hypothesis that there should be correlation between some countries stock price and currency data,
-I believe the simpler model is enough.  
+Evaluation score is 6.138374768395386e-05
+Dummy evaluation score is 0.0002681380814638387
+This prediction model's MSE is 22.892588530820866 percent compared to benchmark. (smaller is better)
+```
+
+#### Training with epochs: 300
+
+```python
+Completed Prediction.
+(203, 2)
+   predicted_nikkei  actual_nikkei
+0          0.997783       1.003443
+1          0.998673       0.987100
+2          0.998173       0.994546
+3          1.008930       1.014345
+4          1.002257       1.018097
+5          1.001599       1.003351
+6          1.000174       0.994938
+7          0.991833       0.983091
+8          0.999994       1.005606
+9          1.002434       0.987806
+203/203 [==============================] - 0s 221us/step
+Evaluation score is 4.7810021372829685e-05
+Dummy evaluation score is 0.0002681380814638387
+This prediction model's MSE is 17.83037348213345 percent compared to benchmark. (smaller is better)
+```
+
+As the results show, the both evaluation score is much lower than the dummy evaluation score.
+Result based on the training with epochs: 100 got 22.8% MSE and it with epochs: 300 got 17.8% MSE.
+
+I think this model works well and it could predict based on the LSTM.
 
 ### Justification
 
-Compared to the benchmark (made by dummy classifier), this prediction model lessen the MSE (Mean Squared Error) about 80%.
+Compared to the benchmark (made by dummy classifier), this prediction model lessen the MSE (Mean Squared Error) more than 80%.
 I think this is significant result as it is quite difficult to predict the next day's change rate.
 
 ## V. Conclusion
 
 ### Free-Form Visualization
 
-- ![Epochs 100](test-ep-100.png)
+- Prediction/Actual with Epochs: 100
+ ![Epochs 100](test-epochs-100.png)
+(Orange is actual / Blue is predicted)
+
+- Prediction/Actual with Epochs: 300
+ ![Epochs 300](test-epochs-300.png)
 (Orange is actual / Blue is predicted)
 
 This is the comparison between predicted change rate and actual change rate.
 
-I could find that the actual change rate is larger (high volatility) and the predicted one is smaller (low volatility).
-But the remarkable result is that some of the day it has big drop and the prediction also drop at the same day.
+I noticed that the actual change rate is larger (high volatility) and the predicted one is relatively smaller (low volatility).
+But the remarkable result is that it predicts very well for the big big drop and some of the rising.
 Of course it does not work well for some days, but as I see the graph I think it works better than expected. 
 
 ### Reflection
@@ -291,6 +337,11 @@ Of course it does not work well for some days, but as I see the graph I think it
 The important point to predict the time-series data is to avoid the look ahead bias.
 The time-series data affects each other. The values in the past affects to the value of the next day.
 This time, I split the data by the period so I believe I could avoid the look ahead bias.
+
+And about building the model, I decided to train the model with the simpler model, but the difficult point is how to find the best model.
+This model has only 1 LSTM layer (with 50 hidden units) and dense it to output feature.
+But, based on the purpose of this project, it is to investigate my hypothesis that there should be correlation between some countries stock price and currency data,
+and I believe I could achieve my target.
 
 ### Improvement
 
@@ -302,4 +353,3 @@ Even if the error is small, it is more important to know whether the stock rises
 
 About generalization of this implementation, I think it can be generally used for other stock data.
 Just dropping the unnecessary data, and calculate the change rate then you can input those feature data and train the model. 
-

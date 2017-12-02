@@ -45,7 +45,7 @@ class DataPreprocessor:
     @classmethod
     def __create_blank_dataframe(cls):
         today = pd.to_datetime('today')
-        start = pd.to_datetime('2013-01-22')
+        start = pd.to_datetime('2003-01-22')
         dates = []
         for i in cls.__daterange(start, today):
             # print(i.strftime("%Y-%m-%d"))
