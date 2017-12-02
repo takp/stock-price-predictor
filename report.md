@@ -6,32 +6,25 @@ December 2, 2017
 
 ## I. Definition
 
-Predicting the stock price has been researched for long. 
-Now many people try to predict stock price with the machine learning algorithms, but there is not a single answer for this and it is still challenging problem.
+Predicting the stock price has been researched for long. Now many people try to predict stock price with the machine learning algorithms, but there is not a single answer for this and it is still challenging problem.
 
-It is also known that every country's stock market influences each other.
-In this project, I am going to predict the stock price in Japan with the data of US stock price and USD/JPY exchange rates.
+It is also known that every country's stock market influences each other. In this project, I am going to predict the stock price in Japan with the data of US stock price and USD/JPY exchange rates.
 
 ### Project Overview
 
-The goal of this project is to predict the change rate of the close price of Nikkei 225 index compared to the previous day. 
-Nikkei 225 is a stock market index for the Tokyo Stock Exchange in Japan. 
+The goal of this project is to predict the change rate of the close price of Nikkei 225 index compared to the previous day. Nikkei 225 is a stock market index for the Tokyo Stock Exchange in Japan. 
 
-I have an hypothesis that the Nikkei 225 has a strong correlation with the close price of US stock price and JPY/USD currency exchange rate.
-So, I am going to predict the change rate of the Nikkei 225 Based on its historical data, NASDAQ and USD/JPY exchange rates.
+I have an hypothesis that the Nikkei 225 has a strong correlation with the close price of US stock price and JPY/USD currency exchange rate. So, I am going to predict the change rate of the Nikkei 225 Based on its historical data, NASDAQ and USD/JPY exchange rates.
 
 ### Problem Statement
 
 The problem I try to solve is predicting the change rate of the Nikkei 225.
 
-The target variable is the Nikkei 225's relative change rate from the previous day.
-For example, in case the Nikkei 225 index close price is "21450.04" and it was "21374.66" at the previous day, the relative change rate is ("21450.04" / "21374.66" ) ≒ 1.00352. 
-Then, it is possible to know the error between the predicted rate and the actual rate.
+The target variable is the Nikkei 225's relative change rate from the previous day. For example, in case the Nikkei 225 index close price is "21450.04" and it was "21374.66" at the previous day, the relative change rate is ("21450.04" / "21374.66" ) ≒ 1.00352. Then, it is possible to know the error between the predicted rate and the actual rate.
 
 ### Metrics
 
-I use MSE (Mean Squared Error) to evaluate the prediction.
-To leesen the error between the actual and the prediction, I think the MSE is suitable for this problem. 
+I use MSE (Mean Squared Error) to evaluate the prediction. To leesen the error between the actual and the prediction, I think the MSE is suitable for this problem. 
 
 ## II. Analysis
 
@@ -39,21 +32,21 @@ To leesen the error between the actual and the prediction, I think the MSE is su
 
 The data I am going to use is Nikkei 225, NASDAQ and USD/JPY currency data.
 
-##### 1. Nikkei 225 
+#### 1. Nikkei 225 
 
 The data starts from January 1950 to current date. This data can be obtained at Quandl.
 - https://www.quandl.com/data/NIKKEI/INDEX-Nikkei-Index
 
 The input feature data is the change rate from the previous day of Nikkei 225.
 
-##### 2. NASDAQ Index
+#### 2. NASDAQ Index
 
 The data starts from January 2003 to current date. This data can be obtained at Quandl.
 - https://www.quandl.com/data/NASDAQOMX/COMP-NASDAQ-Composite-COMP
 
 The input feature data is the change rate from the previous day of the NASDAQ index.
 
-##### 3. Currency Exchange - JPY/USD
+#### 3. Currency Exchange - JPY/USD
 
 The data starts from March 1991 to current date. This data can be obtained at Quandl.
 - https://www.quandl.com/data/CURRFX/USDJPY-Currency-Exchange-Rates-USD-vs-JPY
@@ -64,7 +57,7 @@ The input feature data is the change rate from the previous day of the JPY/USD e
 
 These are the example of the original data.
 
-##### Nikkei data
+#### Nikkei data
 
 ```python
          Date  Open Price  High Price  Low Price  Close Price
@@ -75,7 +68,7 @@ These are the example of the original data.
 4  2017-11-17    22603.30    22757.40   22319.12     22396.80
 ```
 
-##### Nasdaq data
+#### Nasdaq data
 
 ```python
    Trade Date  Index Value     High      Low  Total Market Value
@@ -93,7 +86,7 @@ These are the example of the original data.
 4            284443422.0  
 ```
 
-##### Currency data
+#### Currency data
 
 ```python
          Date        Rate  High (est)   Low (est)
@@ -106,22 +99,19 @@ These are the example of the original data.
 
 All these 3 data has the close price.
 
-Usually each market opens for the weekday, but the market is closed for the holidays and it's different between Japan and US.
-So I remove the data if at lease one of the markets was closed.
+Usually each market opens for the weekday, but the market is closed for the holidays and it's different between Japan and US. So I remove the data if at lease one of the markets was closed.
 
 ### Algorithms and Techniques
 
 The solution to this problem is to apply LSTM (Long short-term memory) to predict the Nikkei 225 index of the next day. LSTM is a one kind of the RNN (Recurrent neural network).
-This is a type of time-series problem and LSTM has the advantages to solve the time-serires problem.
-LSTM can remember the past values better.
 
-I apply the technique that is called "sliding window" for time series data.
-I will input the data of input_size: N (days). It will input the data within N days (including Nikkei 225, NASDAQ and currency exchange) as a feature data. 
+This is a type of time-series problem and LSTM has the advantages to solve the time-serires problem. LSTM can remember the past values better.
+
+I apply the technique that is called "sliding window" for time series data. I will input the data of input_size: N (days). It will input the data within N days (including Nikkei 225, NASDAQ and currency exchange) as a feature data. 
 
 ### Benchmark
 
-Benchmark model is made by the [DummyClassifier](http://scikit-learn.org/stable/modules/generated/sklearn.dummy.DummyClassifier.html).
-The MSE (Mean Squared Error) of the prediction should be less than the benchmark score.
+Benchmark model is made by the [DummyClassifier](http://scikit-learn.org/stable/modules/generated/sklearn.dummy.DummyClassifier.html). The MSE (Mean Squared Error) of the prediction should be less than the benchmark score.
 
 ## III. Methodology
 
@@ -193,9 +183,9 @@ So it should be avoided to extract validation data or test data randomly.
 Instead, I'm going to split the data by time. 
 
 I decided to split the data as following:
-- Train: "2003-01-22" to "2016-01-01"
+- Train: "2003-01-22" to "2015-12-31"
 - Validation: "2016-01-01" to "2016-12-31"
-- Test: "2017-01-01" to newest date
+- Test: "2017-01-01" to 2017-11-24"
 
 Now the data samples are:
 - 3060 samples for train
@@ -215,8 +205,7 @@ model = LSTMModel(timesteps, hidden_neurons).build()
 
 At first, I build the simple model.
 
-1st layer is LSTM with hidden units: 50.
-and flatten it and finally dense it with lenear activation.  
+1st layer is LSTM with hidden units: 50. And flatten it and finally dense it with lenear activation.  
 
 ```python
 # Output of model.summary()
@@ -248,13 +237,12 @@ I fit the model with this configurations:
 
 - timesteps = 10 (days: sequence of the sliding window)
 - hidden_neurons = 50 (number of hidden units)
-- epochs = 100 (500 later)
+- epochs = 100 (300 later)
 - batchsize = 10
 
 ### Refinement
 
-I started to fit the model with epochs: 10 but it's not enough to fit.
-I could see the MSE score still keep going down so I changed it to 100.
+I started to fit the model with epochs: 10 but it's not enough to fit. I could see the MSE score still keep going down so I changed it to 100. After that I tried epochs with 300 too to compare the result.
 
 ## IV. Results
 
@@ -304,15 +292,13 @@ Dummy evaluation score is 0.0002681380814638387
 This prediction model's MSE is 17.83037348213345 percent compared to benchmark. (smaller is better)
 ```
 
-As the results show, the both evaluation score is much lower than the dummy evaluation score.
-Result based on the training with epochs: 100 got 22.8% MSE and it with epochs: 300 got 17.8% MSE.
+As the results show, the both evaluation score is much lower than the dummy evaluation score. Result based on the training with epochs: 100 got 22.8% MSE and it with epochs: 300 got 17.8% MSE.
 
 I think this model works well and it could predict based on the LSTM.
 
 ### Justification
 
-Compared to the benchmark (made by dummy classifier), this prediction model lessen the MSE (Mean Squared Error) more than 80%.
-I think this is significant result as it is quite difficult to predict the next day's change rate.
+Compared to the benchmark (made by dummy classifier), this prediction model lessen the MSE (Mean Squared Error) more than 80%. I think this is significant result as it is quite difficult to predict the next day's change rate.
 
 ## V. Conclusion
 
@@ -328,28 +314,17 @@ I think this is significant result as it is quite difficult to predict the next 
 
 This is the comparison between predicted change rate and actual change rate.
 
-I noticed that the actual change rate is larger (high volatility) and the predicted one is relatively smaller (low volatility).
-But the remarkable result is that it predicts very well for the big big drop and some of the rising.
-Of course it does not work well for some days, but as I see the graph I think it works better than expected. 
+I noticed that the actual change rate is larger (high volatility) and the predicted one is relatively smaller (low volatility). But the remarkable result is that it predicts very well for the big big drop and some of the rising. Of course it does not work well for some days, but as I see the graph I think the prediction results fit with the actual very well. 
 
 ### Reflection
 
-The important point to predict the time-series data is to avoid the look ahead bias.
-The time-series data affects each other. The values in the past affects to the value of the next day.
-This time, I split the data by the period so I believe I could avoid the look ahead bias.
+The important point to predict the time-series data is to avoid the look ahead bias. The time-series data affects each other. The values in the past affects to the value of the next day. This time, I split the data by the period so I believe I could avoid the look ahead bias.
 
-And about building the model, I decided to train the model with the simpler model, but the difficult point is how to find the best model.
-This model has only 1 LSTM layer (with 50 hidden units) and dense it to output feature.
-But, based on the purpose of this project, it is to investigate my hypothesis that there should be correlation between some countries stock price and currency data,
-and I believe I could achieve my target.
+And about building the model, I decided to train the model with the simpler model, but the difficult point is how to find the best model. This model has only 1 LSTM layer (with 50 hidden units) and dense it to output feature.
+But, based on the purpose of this project, it is to investigate my hypothesis that there should be correlation between some countries stock price and currency data, and I believe I could achieve my target.
 
 ### Improvement
 
-It may improve the result by using another evaluation metrics.
-I evaluate the model by the mean squared error.
-To consider buying or not buying the stock, it is important to know the stock price will rise or fall.
-But this implementation minimize the error so that it may end up with incorrect conclusion. 
-Even if the error is small, it is more important to know whether the stock rises or fall.
+It may improve the result by using another evaluation metrics. I evaluate the model by the mean squared error. To consider buying or not buying the stock, it is important to know the stock price will rise or fall. But this implementation minimize the error so that it may end up with incorrect conclusion. Even if the error is small, it is more important to know whether the stock rises or fall.
 
-About generalization of this implementation, I think it can be generally used for other stock data.
-Just dropping the unnecessary data, and calculate the change rate then you can input those feature data and train the model. 
+About generalization of this implementation, I think it can be generally used for other stock data. Just dropping the unnecessary data, and calculate the change rate then you can input those feature data and train the model. 
