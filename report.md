@@ -2,7 +2,7 @@
 
 ## Capstone Project
 Takayoshi Nishida  
-November 26, 2017
+December 2, 2017
 
 ## I. Definition
 
@@ -277,7 +277,7 @@ I think this is significant result as it is quite difficult to predict the next 
 
 ### Free-Form Visualization
 
-- ![Image]()
+- ![Epochs 100](test-ep-100.png)
 (Orange is actual / Blue is predicted)
 
 This is the comparison between predicted change rate and actual change rate.
@@ -285,3 +285,21 @@ This is the comparison between predicted change rate and actual change rate.
 I could find that the actual change rate is larger (high volatility) and the predicted one is smaller (low volatility).
 But the remarkable result is that some of the day it has big drop and the prediction also drop at the same day.
 Of course it does not work well for some days, but as I see the graph I think it works better than expected. 
+
+### Reflection
+
+The important point to predict the time-series data is to avoid the look ahead bias.
+The time-series data affects each other. The values in the past affects to the value of the next day.
+This time, I split the data by the period so I believe I could avoid the look ahead bias.
+
+### Improvement
+
+It may improve the result by using another evaluation metrics.
+I evaluate the model by the mean squared error.
+To consider buying or not buying the stock, it is important to know the stock price will rise or fall.
+But this implementation minimize the error so that it may end up with incorrect conclusion. 
+Even if the error is small, it is more important to know whether the stock rises or fall.
+
+About generalization of this implementation, I think it can be generally used for other stock data.
+Just dropping the unnecessary data, and calculate the change rate then you can input those feature data and train the model. 
+
