@@ -18,13 +18,24 @@ I have an hypothesis that the Nikkei 225 has a strong correlation with the close
 
 ### Problem Statement
 
-The problem I try to solve is predicting the change rate of the Nikkei 225.
+The problem I try to solve is predicting the change rate of the Nikkei 225 and this is regression problem.
 
 The target variable is the Nikkei 225's relative change rate from the previous day. For example, in case the Nikkei 225 index close price is "21450.04" and it was "21374.66" at the previous day, the relative change rate is ("21450.04" / "21374.66" ) ≒ 1.00352. Then, it is possible to know the error between the predicted rate and the actual rate.
 
+From the Mitchell’s definition of a machine learning task, tihs problem can be defined as following. 
+>Definition: A computer program is said to learn from experience E with respect to some class of tasks T and performance measure P, if its performance at tasks in T, as measured by P, improves with experience E.
+
+- Task (T): Predict the change rate of Nikkei 225 of the next day.
+- Experience (E): History data of Nikkei 225, NASDAQ and currency exchange (JPY/USD)
+- Performance (P): Mean squared error between predicted value and the actual value
+
+------------------
+Definition: A computer program is said to learn from experience E with respect to some class of tasks T and performance measure P, if its performance at tasks in T, as measured by P, improves with experience E.
+------------------
+
 ### Metrics
 
-I use MSE (Mean Squared Error) to evaluate the prediction. To leesen the error between the actual and the prediction, I think the MSE is suitable for this problem. 
+I use MSE (Mean Squared Error) to evaluate the prediction. To lessen the error between the prediction and the actual, I think the MSE is suitable for this problem. 
 
 ## II. Analysis
 
