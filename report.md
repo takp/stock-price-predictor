@@ -36,6 +36,7 @@ Definition: A computer program is said to learn from experience E with respect t
 ### Metrics
 
 I use MSE (Mean Squared Error) to evaluate the prediction. To lessen the error between the prediction and the actual, I think the MSE is suitable for this problem. 
+Because all datasets are normally distributed and so that the MSE will work correctly. (Please refer to the distribution histogram later.)
 
 ## II. Analysis
 
@@ -116,9 +117,11 @@ Usually each market opens for the weekday, but the market is closed for the holi
 
 I use the change rate as a feature data, so I plotted the distribution of the change rates.
 
-![Nikkei 225's change rates distribution](images/nikkei-dist.png)
-![NASDAQ's change rates distribution](images/nasdaq-dist.png)
-![currency's change rates distribution](images/currency-dist.png)
+- ![Nikkei 225's change rates distribution](images/nikkei-dist.png)
+
+- ![NASDAQ's change rates distribution](images/nasdaq-dist.png)
+
+- ![currency's change rates distribution](images/currency-dist.png)
 
 ```
 [nikkei] Mean: 1.00030619031
@@ -129,15 +132,24 @@ I use the change rate as a feature data, so I plotted the distribution of the ch
 [currency] Standard deviation: 0.00712121948432
 ```
 
-I think the data are distributed as normal distribution.
+As you can see the graph, the data are normally distributed. 
+The standard deviation for the currency is slightly smaller compared to nikkei & nasdaq, but the currency is also normaly distributed.
+And I think there are not remarkable abnormalities in the datasets so I think I can use all of the datasets. 
 
 ### Algorithms and Techniques
 
-The solution to this problem is to apply LSTM (Long short-term memory) to predict the Nikkei 225 index of the next day. LSTM is a one kind of the RNN (Recurrent neural network).
+The solution to this problem is to apply LSTM (Long short-term memory) to predict the Nikkei 225 index of the next day. 
 
-This is a type of time-series problem and LSTM has the advantages to solve the time-serires problem. LSTM can remember the past values better.
+This is a type of time-series problem, so I need to consider which algorithms to apply here.
 
-I apply the technique that is called "sliding window" for time series data. I will input the data of input_size: N (days). It will input the data within N days (including Nikkei 225, NASDAQ and currency exchange) as a feature data. 
+Neural networks assume that the each input data is independent. But this assumption does not suit for some kind of the problems. For example the prediction of the stock price, the data are not independent. The stock price on the day, say day `T`, it influences to the price of next day `T+1` and `T+2` or more future. So we need other algorithms to solve these problems.
+
+RNN (Recurrent Neural Network) can deal those kind of problems. RNN remembers the information inside of it by making a internal loop (this is recurrent). But RNN has problem to handle a "long-term dependencies". If long context is needed for the problem, RNN could not solve it well. 
+
+LSTM is a one kind of the RNN (Recurrent neural network), capable of learning long-term dependencies. Both RNN and LSTM has the repeating module of neural network. RNN repeats it very simple structure, but LSTM repeats it with special way. So that LSTM can remember with longer context, and it is the reason to use LSTM for this problem. 
+
+Also, I apply the technique that is called "sliding window" for time series data. For example, sliding window size: N, it will input the feature data with N (days/units/etc).
+This assume that the near past data influences a lot to the result. In this case, I will input the data within 10 days to train the model. 
 
 ### Benchmark
 
