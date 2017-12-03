@@ -112,6 +112,25 @@ All these 3 data has the close price.
 
 Usually each market opens for the weekday, but the market is closed for the holidays and it's different between Japan and US. So I remove the data if at lease one of the markets was closed.
 
+#### Distribution of the datasets
+
+I use the change rate as a feature data, so I plotted the distribution of the change rates.
+
+![Nikkei 225's change rates distribution](images/nikkei-dist.png)
+![NASDAQ's change rates distribution](images/nasdaq-dist.png)
+![currency's change rates distribution](images/currency-dist.png)
+
+```
+[nikkei] Mean: 1.00030619031
+[nikkei] Standard deviation: 0.0150312332318
+[nasdaq] Mean: 1.00041836719
+[nasdaq] Standard deviation: 0.0129797045167
+[currency] Mean: 0.999975614903
+[currency] Standard deviation: 0.00712121948432
+```
+
+I think the data are distributed as normal distribution.
+
 ### Algorithms and Techniques
 
 The solution to this problem is to apply LSTM (Long short-term memory) to predict the Nikkei 225 index of the next day. LSTM is a one kind of the RNN (Recurrent neural network).
@@ -316,11 +335,11 @@ Compared to the benchmark (made by dummy classifier), this prediction model less
 ### Free-Form Visualization
 
 - Prediction/Actual with Epochs: 100
- ![Epochs 100](test-epochs-100.png)
+ ![Epochs 100](images/test-epochs-100.png)
 (Orange is actual / Blue is predicted)
 
 - Prediction/Actual with Epochs: 300
- ![Epochs 300](test-epochs-300.png)
+ ![Epochs 300](images/test-epochs-300.png)
 (Orange is actual / Blue is predicted)
 
 This is the comparison between predicted change rate and actual change rate.

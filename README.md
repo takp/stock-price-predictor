@@ -20,7 +20,7 @@ Add `/data` directory and locate the downloaded files under `/data` directory.
 
 ## Run
 
-```python
+```bash
 $ python main.py
 ```
 

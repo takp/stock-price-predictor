@@ -26,6 +26,7 @@ currency_data = DataPreprocessor(currency_data_org).preprocess_data(dropping_fea
 
 merged_data = DataPreprocessor.merge(nikkei_data, nasdaq_data, currency_data)
 data = merged_data.dropna()
+data.to_csv("data/data.csv")
 
 # Split the data
 data_train, data_val, data_test = DataSplitter.split_to_train_val_test(data)
