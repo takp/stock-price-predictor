@@ -349,9 +349,23 @@ Dummy evaluation score is 0.0002681380814638387
 This prediction model's MSE is 17.83037348213345 percent compared to benchmark. (smaller is better)
 ```
 
-As the results show, the both evaluation score is much lower than the dummy evaluation score. Result based on the training with epochs: 100 got 22.8% MSE and it with epochs: 300 got 17.8% MSE.
+As the results show, the both evaluation score is much lower than the dummy evaluation score. 
 
-I think this model works well and it could predict based on the LSTM.
+For epoch: 100, 
+
+>This prediction model's MSE is 22.892588530820866 percent compared to benchmark. (smaller is better)
+
+this means MSE (Mean Absolute Error) score is 22.8% of the MSE of benchmark dummy classifier.
+So it could lessen the error 77.2%.  
+
+And for epoch: 300
+
+>This prediction model's MSE is 17.83037348213345 percent compared to benchmark. (smaller is better)
+
+this means MSE score is only 17.8% of the MSE of benchmark dummy classifier.
+This trained model could lessen the error 82.2%.
+
+I think I can say this model works well and it could predict based on the LSTM.
 
 ### Justification
 
@@ -371,7 +385,11 @@ Compared to the benchmark (made by dummy classifier), this prediction model less
 
 This is the comparison between predicted change rate and actual change rate.
 
-I noticed that the actual change rate is larger (high volatility) and the predicted one is relatively smaller (low volatility). But the remarkable result is that it predicts very well for the big big drop and some of the rising. Of course it does not work well for some days, but as I see the graph I think the prediction results fit with the actual very well. 
+I noticed that the actual change rate is high volatility and the predicted one is relatively low volatility. But the remarkable result is that it predicts very well for the big drop and some of the rising. Of course it does not work well for some days, but as I see the graph I think the prediction results fit with the actual very well. 
+
+For the reasons why the predicted change rate is relatively low volatility, I would assume it is because the model is trained with metrics MAE (Mean Absolute Error). To lessen the error, it is important to predict close to the actual, so it is likely to predict the low volatility because it will result with low error. 
+
+But I believe this does not matter in terms of the usefulness. Even the prediction is low volatility, it is still very useful to know the predicted change rate is positive or negative number. 
 
 ### Reflection
 
