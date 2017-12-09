@@ -400,11 +400,11 @@ Compared to the benchmark (made by dummy classifier), this prediction model less
 
 ### Free-Form Visualization
 
-- Prediction/Actual with Epochs: 100
+- Prediction result with Epochs: 100, hidden_neurons: 50
   ![Epochs 100](images/test-epochs-100.png)
   (Blue: Predicted, Orange: Actual)
 
-- Prediction/Actual with Epochs: 300
+- Prediction result with Epochs: 300, hidden_neurons: 50
   ![Epochs 300](images/test-epochs-300.png)
   (Blue: Predicted, Orange: Actual)
 
