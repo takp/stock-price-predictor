@@ -293,19 +293,21 @@ I could see the MSE score still keep going down so I changed it to 100, and I al
 
 Here are the training histories graph.
 
-- Epoch: 100
+- Epoch: 100, hidden_neurons: 50
   ![Training histroy with epochs 100](images/training-ep-100.png)
+  (Blue: Training Loss, Orange: Validation Loss)
 
-- Epoch: 300 
+- Epoch: 300, hidden_neurons: 50 
   ![Training histroy with epochs 300](images/training-ep-300.png)
+  (Blue: Training Loss, Orange: Validation Loss)
 
-As you can see, the metrics score calculated by MSE (Mean Absolute Error) is going down and converge.
+As you can see, the metrics score calculated by MSE (Mean Absolute Error) is going down and converge. So I think it's good choice to train the model with epoch: 300.
 
 ## IV. Results
 
 ### Model Evaluation and Validation
 
-#### Training with epochs: 100
+#### Training with epochs: 100, hidden_neurons: 50
 
 ```python
 Completed Prediction.
@@ -327,7 +329,10 @@ Dummy evaluation score is 0.0002681380814638387
 This prediction model's MSE is 22.892588530820866 percent compared to benchmark. (smaller is better)
 ```
 
-#### Training with epochs: 300
+For epoch: 100, this means MSE (Mean Absolute Error) score is 22.8% of the MSE of benchmark dummy classifier.
+So it could lessen the error 77.2%.
+
+#### Training with epochs: 300, hidden_neurons: 50
 
 ```python
 Completed Prediction.
@@ -349,23 +354,43 @@ Dummy evaluation score is 0.0002681380814638387
 This prediction model's MSE is 17.83037348213345 percent compared to benchmark. (smaller is better)
 ```
 
-As the results show, the both evaluation score is much lower than the dummy evaluation score. 
+For epoch: 300, this means MSE score is only 17.8% of the MSE of benchmark dummy classifier.
+So this trained model could lessen the error 82.2%.
 
-For epoch: 100, 
+#### Training with epochs: 300, hidden_neurons: 100
 
->This prediction model's MSE is 22.892588530820866 percent compared to benchmark. (smaller is better)
+I have tried with the hidden_neurons: 100 (units), but the predicted MSE was not good as expected.
 
-this means MSE (Mean Absolute Error) score is 22.8% of the MSE of benchmark dummy classifier.
-So it could lessen the error 77.2%.  
+```python
+Completed Prediction.
+(203, 2)
+   predicted_nikkei  actual_nikkei
+0          0.990239       1.003443
+1          0.992396       0.987100
+2          0.994693       0.994546
+3          1.002828       1.014345
+4          0.995091       1.018097
+5          0.993139       1.003351
+6          0.995148       0.994938
+7          0.986415       0.983091
+8          0.995963       1.005606
+9          0.995927       0.987806
+203/203 [==============================] - 0s 248us/step
+Evaluation score is 8.600796711214776e-05
+Dummy evaluation score is 0.0002681380814638387
+This prediction model's MSE is 32.07599854619936 percent compared to benchmark. (smaller is better)
+```
 
-And for epoch: 300
+This MSE score with hidden_neurons: 100 is worse than the score of hidden_neurons: 50. This MSE score is 32.0% of dummy classfier, so it could lessen the MSE error only 68.0%.
+I guess this is because the model has too many hidden neurons so that it overfitted to the training data.
 
->This prediction model's MSE is 17.83037348213345 percent compared to benchmark. (smaller is better)
+From these results, I think the training with epoch: 300 and hidden_neurons: 50 is reasonable choice.
 
-this means MSE score is only 17.8% of the MSE of benchmark dummy classifier.
-This trained model could lessen the error 82.2%.
-
-I think I can say this model works well and it could predict based on the LSTM.
+These are the configuration finally I chose:
+- timesteps = 10 (days: sequence of the sliding window)
+- hidden_neurons = 50 (number of hidden units)
+- epochs = 300
+- batchsize = 10
 
 ### Justification
 
@@ -376,12 +401,12 @@ Compared to the benchmark (made by dummy classifier), this prediction model less
 ### Free-Form Visualization
 
 - Prediction/Actual with Epochs: 100
- ![Epochs 100](images/test-epochs-100.png)
-(Orange is actual / Blue is predicted)
+  ![Epochs 100](images/test-epochs-100.png)
+  (Blue: Predicted, Orange: Actual)
 
 - Prediction/Actual with Epochs: 300
- ![Epochs 300](images/test-epochs-300.png)
-(Orange is actual / Blue is predicted)
+  ![Epochs 300](images/test-epochs-300.png)
+  (Blue: Predicted, Orange: Actual)
 
 This is the comparison between predicted change rate and actual change rate.
 
