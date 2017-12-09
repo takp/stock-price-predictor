@@ -47,8 +47,12 @@ print("Test dataset has {} samples.".format(*x_test.shape))
 # Build & train model
 model = LSTMModel(timesteps, hidden_neurons).build()
 print("Fitting the model...")
-model.fit(x_train, y_train,
-          batch_size=batchsize, epochs=epochs, validation_data=(x_val, y_val))
+history = model.fit(x_train, y_train,
+                    batch_size=batchsize, epochs=epochs, validation_data=(x_val, y_val))
+
+# Output training history to csv
+history_df = pd.DataFrame(history.history)
+history_df.to_csv("training_history.csv")
 
 print("Predicting...")
 result = model.predict(x_test)
