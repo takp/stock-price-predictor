@@ -29,10 +29,6 @@ From the Mitchell’s definition of a machine learning task, tihs problem can be
 - Experience (E): History data of Nikkei 225, NASDAQ and currency exchange (JPY/USD)
 - Performance (P): Mean squared error between predicted value and the actual value
 
-------------------
-Definition: A computer program is said to learn from experience E with respect to some class of tasks T and performance measure P, if its performance at tasks in T, as measured by P, improves with experience E.
-------------------
-
 ### Metrics
 
 I use MSE (Mean Squared Error) to evaluate the prediction. To lessen the error between the prediction and the actual, I think the MSE is suitable for this problem. 
@@ -247,7 +243,7 @@ model = LSTMModel(timesteps, hidden_neurons).build()
 
 At first, I build the simple model.
 
-1st layer is LSTM with hidden units: 50. And flatten it and finally dense it with lenear activation.  
+1st layer is LSTM with hidden units: 50. And flatten it and finally dense it with linear activation.  
 
 ```python
 # Output of model.summary()
@@ -282,9 +278,28 @@ I fit the model with this configurations:
 - epochs = 100 (300 later)
 - batchsize = 10
 
+The difficult point is to decide the structure of the model and the configuration.
+I thought I start with simple model first, but I need to consider what the simple model is.
+I think the the model with only 1 layer is simple enough, so I set only 1 layer for this model. 
+And I set the configuration to reasonable round number. 
+The `timesteps: 10 (days)` is enough to consider the sequence of the data, 
+`hidden neurons: 50 (units)` is arbitrary but I believe the LSTM model can be built with 50 units.
+For `epochs` and `batchsize`, I adjusted them looking how the metrics change.  
+
 ### Refinement
 
-I started to fit the model with epochs: 10 but it's not enough to fit. I could see the MSE score still keep going down so I changed it to 100. After that I tried epochs with 300 too to compare the result.
+I started to fit the model with epochs: 10 but it's not enough to fit. 
+I could see the MSE score still keep going down so I changed it to 100, and I also tried epochs with 300.
+
+Here are the training histories graph.
+
+- Epoch: 100
+  ![Training histroy with epochs 100](images/training-ep-100.png)
+
+- Epoch: 300 
+  ![Training histroy with epochs 300](images/training-ep-300.png)
+
+As you can see, the metrics score calculated by MSE (Mean Absolute Error) is going down and converge.
 
 ## IV. Results
 
