@@ -1,12 +1,30 @@
-# MLND-Capstone
+# stock-price-predictor
 
-My capstone project report for Udacity's Machine Learning Nanodegree
+Predicting the stock price has been researched for long. 
+Now many people try to predict stock price with the machine learning algorithms, 
+but there is not a single answer for this and it is still challenging problem.
+
+It is also known that every country's stock market influences each other. 
+In this project, I am going to predict the stock price in Japan with the data of US stock price and USD/JPY exchange rates.
 
 ## Versions
 
 - Python 3.6.1 :: Anaconda 4.4.0 (64-bit)
 - tensorflow-1.4.0
 - keras-2.0.9
+
+## Methodology
+
+### LSTM Model
+
+LSTM is a one kind of the RNN (Recurrent neural network), capable of learning long-term dependencies. 
+Both RNN and LSTM has the repeating module of neural network. 
+RNN repeats it very simple structure, but LSTM repeats it with special way. 
+So that LSTM can remember with longer context, and it is the reason to use LSTM for this problem.
+
+### Benchmark
+
+Benchmark model is made by the DummyClassifier. The MSE (Mean Squared Error) of the prediction should be less than the benchmark score.
 
 ## Datasets
 
@@ -34,4 +52,4 @@ You can find the report [here](https://github.com/takp/MLND-capstone-project/blo
 
 ## Author
 
-Takayoshi Nishida
+Takayoshi Nishida <takayoshi.nishida@gmail.com>
