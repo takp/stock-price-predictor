@@ -7,12 +7,6 @@ but there is not a single answer for this and it is still challenging problem.
 It is also known that every country's stock market influences each other. 
 In this project, I am going to predict the stock price in Japan with the data of US stock price and USD/JPY exchange rates.
 
-## Versions
-
-- Python 3.6.1 :: Anaconda 4.4.0 (64-bit)
-- tensorflow-1.4.0
-- keras-2.0.9
-
 ## Methodology
 
 ### LSTM Model
@@ -66,7 +60,8 @@ Add `/data` directory and locate the downloaded files under `/data` directory.
 #### Execute
 
 ```bash
-$ python main.py
+$ docker build -t stock-price-predictor .
+$ docker run -it stock-price-predictor python main.py
 ```
 
 ## Prediction Result
